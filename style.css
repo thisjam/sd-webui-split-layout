@@ -1,44 +1,14 @@
 
 
-.sixgod-left-layout{
-    flex: auto !important;    
-    width:80%;
-    max-width: 80% !important; 
-    min-width: 20% !important;   
-}
-
-.sixgod-right-layout{
-     /* flex: auto !important; */
-     min-width: 20% !important; 
-     width: auto !important; ;
-  
-}
-
-.nowarp{
-    flex-wrap: nowrap !important;
-}
-
-#sampler_selection_txt2img{
+ 
+ 
+#oldsix-prompt1,#oldsix-prompt2{
     margin: 10px auto 10px auto !important;
 }
  
-#oldsix-prompt2 .block.gradio-accordion.svelte-mppz8v.padded{
-    background-color: red!important;
-    position: relative !important;
-    margin: 0 !important;
-    box-shadow: var(--block-shadow) !important;
-    border-width: var(--block-border-width) !important;
-    border-color: var(--block-border-color) !important;
-    border-radius: var(--block-radius) !important;
-    background: var(--block-background-fill) !important;
-    width: 100% !important;
-    line-height: var(--line-sm) !important;
-}
-#oldsix-prompt2{
-    margin: 10px auto;
-}
+ 
 
-#sixgod-layout-slider,#sixgod-layout-save{
+#sixgod-layout-slider,#sixgod-layout-save,#sixgod-layout-slider2{
     max-width: 40% !important;
     padding: 10px;
     margin: 20px auto;
