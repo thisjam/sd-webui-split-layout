@@ -2,7 +2,7 @@
 Author: SixGod_K
 Date: 2023-08-30 23:05:20
 LastEditors: kun
-LastEditTime: 2023-09-01 01:14:11
+LastEditTime: 2023-09-02 12:57:25
 FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\scripts\split-layout.py
 Description: 
 
@@ -10,7 +10,7 @@ Description:
  
 import gradio as gr
 from pathlib import Path
-from modules import script_callbacks, shared
+from modules import shared, script_callbacks, scripts
 import json
 import os
 
@@ -19,6 +19,57 @@ import os
 # 获取当前文件的路径
 current_path = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(current_path, 'val.txt')
+
+
+
+class Script(scripts.Script):
+    def __init__(self):
+        super().__init__()
+        target_ele=None
+        move_ele=None
+        # generate_ele=None
+    
+
+    def title(self):
+        return "split layout"
+    
+
+    def show(self, is_img2img):
+        return scripts.AlwaysVisible
+
+    def on_checkpoint_changed(self, checkpoint):
+        self.checkpoint_override = checkpoint
+
+    def after_component(self, component, **_kwargs):
+        self.findStyleButtom(component)
+        # self.findGenerateBtn(component)
+
+    def findStyleButtom(self,component):
+        move_id = "txt2img_clear_prompt" if self.is_txt2img else "img2img_clear_prompt"
+        target_id = "txt2img_style_apply" if self.is_txt2img else "img2img_style_apply"
+        if component.elem_id == move_id:
+             self.move_ele = component           
+        if component.elem_id == target_id:
+             self.target_ele = component
+            
+          
+
+    # def findGenerateBtn(self,component):
+    #     generate_id = "txt2img_generate" if self.is_txt2img else "img2img_generate"   
+    #     rest_it = "txt2img_results" if self.is_txt2img else "img2img_results"
+    #     if component.elem_id == generate_id:
+    #          self.generate_ele = component
+    #     if component.elem_id == rest_it:
+    #          self.aa = component
+        
+
+    def addBtns(self):
+         self.move_ele.parent.add(self.target_ele)
+     #     self.result_ele.add(self.generate_ele)
+                 
+    def ui(self, is_img2img):
+        self.addBtns()
+         
  
  
 def get_val():         

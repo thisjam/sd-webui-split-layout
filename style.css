@@ -14,3 +14,20 @@
     margin: 20px auto;
    
 }
+
+.sixgod-hide{
+    display: none !important;
+}
+.progressDiv{
+    z-index: 1;
+    top: -5px;
+}
+
+#txt2img_gallery_container{
+    position: relative;
+    z-index: 0;
+}
+
+#img2img_results, #txt2img_results{
+    top: 1.5em;
+}
