@@ -2,7 +2,7 @@
  * @Author: SixGod_K
  * @Date: 2023-08-30 16:47:14
  * @LastEditors: kun
- * @LastEditTime: 2023-09-02 12:56:53
+ * @LastEditTime: 2023-09-09 01:01:41
  * @FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\javascript\split-layout.js
  * @Description: 
  * 
@@ -67,34 +67,53 @@ class LayoutSplit {
     setWidthValue(widthval,heightval) {
         this.Doms.txtleft.parentNode.style.gridTemplateColumns  = `${widthval}px 16px 1fr`;
         this.Doms.imgleft.parentNode.style.gridTemplateColumns  = `${widthval}px 16px 1fr`;
-
         this.Doms.txt2imgarea.style.height  = `${heightval}px`;
         this.Doms.img2imgarea.style.height  = `${heightval}px`; 
         
     };
+
+    moveRightMenu(eve){
+       
+        setTimeout(() => {
+         
+            getEle('#context-menu').style.top = eve.pageY+'px'
+            getEle('#context-menu').style.left =eve.pageX+'px'
+        }, 50);
+        
+
+    }
     
     onScrollevent(top=220) {
         this.Doms.clone1=this.Doms.genaTxtbtn.cloneNode(true)  
         this.Doms.clone2=this.Doms.genaImgbtn.cloneNode(true)
         this.Doms.clone1.children[2].classList.add('secondary')
         this.Doms.clone2.children[2].classList.add('secondary')
+        
         this.Doms.txtPreview.after(this.Doms.clone1)
         this.Doms.imgPreview.after(this.Doms.clone2)
+
+        this.Doms.genaTxtbtn.addEventListener('contextmenu', (event)=> {    
+          
+           this.moveRightMenu(event)
+        })
+        this.Doms.genaImgbtn.addEventListener('contextmenu', (event)=> {    
+          
+            this.moveRightMenu(event)
+         })
  
         window.addEventListener('scroll', ()=> {
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        // console.log(scrollTop);
       
         if (scrollTop > top) { 
             this.Doms.clone1.classList.add('sixgod-hide')
-            this.Doms.clone1.classList.add('sixgod-hide')
+            this.Doms.clone2.classList.add('sixgod-hide')
             this.Doms.txtPreview.after(this.Doms.genaTxtbtn)
             this.Doms.imgPreview.after(this.Doms.genaImgbtn)
             
         }
         else if(scrollTop<top){
             this.Doms.clone1.classList.remove('sixgod-hide')
-            this.Doms.clone1.classList.remove('sixgod-hide')
+            this.Doms.clone2.classList.remove('sixgod-hide')
             this.Doms.txt2imgTools.before(this.Doms.genaTxtbtn)
             this.Doms.img2imgTools.before(this.Doms.genaImgbtn)
         }
