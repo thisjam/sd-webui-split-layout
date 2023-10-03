@@ -32,3 +32,47 @@
     top: 1.5em;
 }
 
+
+ 
+ 
+ 
+.sixgod-rightslid{
+
+    width: 30px !important;   
+    height: 100%;
+    position: fixed;
+    right: 0;  
+    top:10%;
+    border-radius: 5px;
+    background:  var(--body-background-fill) ;
+    transition: width 0.3s ease-in-out;
+    z-index: 999;
+    opacity:0;
+    border: 1px solid #ccc;
+  
+
+}
+
+.sixgod-rightslid:hover{
+    width: 600px !important;  
+    opacity:1;
+    
+}
+.sixgod-rightslid:hover .tabs{
+    display: block; 
+}
+
+.sixgod-rightslid .tabs{  
+    display: none;
+}
+
+.card{
+   
+    margin: 0.2rem!important;  
+    width: 11rem!important;  
+    height: 15rem!important;  
+}
+ 
+.extra-network-cards {
+    padding-bottom: 15rem!important;
+}

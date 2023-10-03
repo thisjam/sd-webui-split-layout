@@ -2,7 +2,7 @@
  * @Author: SixGod_K
  * @Date: 2023-08-30 16:47:14
  * @LastEditors: kun
- * @LastEditTime: 2023-09-09 01:01:41
+ * @LastEditTime: 2023-10-04 03:20:44
  * @FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\javascript\split-layout.js
  * @Description: 
  * 
@@ -29,6 +29,9 @@ class LayoutSplit {
             img2imgTools:getEle('#img2img_tools'),
             txtPreview: getEle('#image_buttons_txt2img'),
             imgPreview: getEle('#image_buttons_img2img'),
+
+            txt2img_extra_tabs: getEle('#txt2img_extra_tabs'),
+            img2img_extra_tabs: getEle('#img2img_extra_tabs'),
             clone1:null,
             clone2:null,
         }
@@ -119,13 +122,77 @@ class LayoutSplit {
         }
       });
     }
-      
+
+
+    
+
+
+    processTabsBtn(domstabs,parentId){
+        let tabs=domstabs.children[0];//第一个div tabs    
+        let buttons = tabs.querySelectorAll(':scope>button');      
+        let generantion=getEle(parentId).querySelector('.sixgod-rightslid-generantion') 
+        buttons[0].classList.add('sixgod-hide')
+        buttons.forEach(btn => {
+            btn.onclick=(eve)=>{
+                generantion.style.display='block'
+                this.processTabsBtn(domstabs,parentId)
+            }            
+        });
+
+        if(buttons[0].classList.contains('selected')){
+            buttons[0].classList.remove('selected')
+            let event = new MouseEvent("click", {
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+                    
+            buttons[3].dispatchEvent(event);      
+            setTimeout(() => {
+                generantion.style.display='block'
+                let newbuttons = tabs.querySelectorAll(':scope>button');      
+                newbuttons[0].classList.add('sixgod-hide')           
+            }, 200);
+            
+        }
+       
+    
+
+    }
+
+    
+    processSildeLayout(domstabs,parentId) {
+        //domstabs=txt2img_extra_tabs||img2img_extra_tabs
+        let silder=document.createElement('div')
+        silder.classList.add("sixgod-silder")
+        
+        //创建右侧悬浮窗
+        let rightslid=document.createElement('div')
+        rightslid.classList.add("sixgod-rightslid")
+        silder.appendChild(rightslid)
+        rightslid.appendChild(domstabs)
+
+       
+        let generantion=domstabs.children[1];
+        generantion.className="sixgod-rightslid-generantion"
+        getEle(parentId).appendChild(silder)
+        getEle(parentId).appendChild(generantion)
+
+
+        this.processTabsBtn(domstabs,parentId)
+     
+         
+
+    }
+    
 
     init() {
         this.loadNode(()=>{
             this.moveData();      
             this.addSaveSlideEve();
             this.onScrollevent();
+            this.processSildeLayout(this.Doms.txt2img_extra_tabs,'#tab_txt2img')
+            this.processSildeLayout(this.Doms.img2img_extra_tabs,'#tab_img2img')
             
         })
     }
@@ -142,6 +209,7 @@ function getEleAll(key) {
     return gradioApp().querySelectorAll(key)
 }
 
+ 
   
 
 
@@ -150,8 +218,7 @@ onUiLoaded(async () => {
     let layout = new LayoutSplit();
     layout.init()
  
-    
-    
+   
    
 
 })
