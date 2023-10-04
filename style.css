@@ -45,7 +45,7 @@
     top:10%;
     border-radius: 5px;
     background:  var(--body-background-fill) ;
-    transition: width 0.3s ease-in-out;
+    transition: width 0.1s ease-in-out;
     z-index: 999;
     opacity:0;
     border: 1px solid #ccc;
@@ -59,11 +59,13 @@
     
 }
 .sixgod-rightslid:hover .tabs{
-    display: block; 
+    
+    opacity:1;
 }
 
 .sixgod-rightslid .tabs{  
-    display: none;
+    
+    opacity:0;
 }
 
 .card{
@@ -76,3 +78,6 @@
 .extra-network-cards {
     padding-bottom: 15rem!important;
 }
+
+
+ 
