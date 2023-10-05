@@ -2,7 +2,7 @@
  * @Author: SixGod_K
  * @Date: 2023-08-30 16:47:14
  * @LastEditors: kun
- * @LastEditTime: 2023-10-04 03:20:44
+ * @LastEditTime: 2023-10-05 17:14:43
  * @FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\javascript\split-layout.js
  * @Description: 
  * 
@@ -77,8 +77,7 @@ class LayoutSplit {
 
     moveRightMenu(eve){
        
-        setTimeout(() => {
-         
+        setTimeout(() => {    
             getEle('#context-menu').style.top = eve.pageY+'px'
             getEle('#context-menu').style.left =eve.pageX+'px'
         }, 50);
@@ -184,7 +183,33 @@ class LayoutSplit {
          
 
     }
-    
+
+    processLoraTool() {
+        // 监视元素
+        const targetElement = document.getElementById('tab_txt2img');
+        const loraTool = document.getElementById('lora-context-menu');
+        this.Doms.txt2img_extra_tabs.after(loraTool)
+        
+        const observer = new MutationObserver((mutationsList, observer)=> {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    if(targetElement.style.display==='none'){
+                        this.Doms.img2img_extra_tabs.after(loraTool)                    
+                    }
+                    else{
+                        this.Doms.txt2img_extra_tabs.after(loraTool)                      
+                    }
+                   
+                }
+            }
+        });
+
+        // 以上面的配置初始化观察者
+        observer.observe(targetElement, { attributes: true, attributeFilter: ['style'] });
+
+    }
+
+   
 
     init() {
         this.loadNode(()=>{
@@ -193,6 +218,7 @@ class LayoutSplit {
             this.onScrollevent();
             this.processSildeLayout(this.Doms.txt2img_extra_tabs,'#tab_txt2img')
             this.processSildeLayout(this.Doms.img2img_extra_tabs,'#tab_img2img')
+            this.processLoraTool()
             
         })
     }
@@ -219,6 +245,4 @@ onUiLoaded(async () => {
     layout.init()
  
    
-   
-
 })
