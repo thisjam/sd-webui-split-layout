@@ -2,7 +2,7 @@
  * @Author: SixGod_K
  * @Date: 2023-08-30 16:47:14
  * @LastEditors: kun
- * @LastEditTime: 2023-10-05 17:14:43
+ * @LastEditTime: 2023-10-05 21:41:15
  * @FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\javascript\split-layout.js
  * @Description: 
  * 
@@ -186,8 +186,10 @@ class LayoutSplit {
 
     processLoraTool() {
         // 监视元素
-        const targetElement = document.getElementById('tab_txt2img');
         const loraTool = document.getElementById('lora-context-menu');
+        if(!loraTool) return
+        const targetElement = document.getElementById('tab_txt2img');
+       
         this.Doms.txt2img_extra_tabs.after(loraTool)
         
         const observer = new MutationObserver((mutationsList, observer)=> {
