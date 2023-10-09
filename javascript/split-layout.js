@@ -2,7 +2,7 @@
  * @Author: SixGod_K
  * @Date: 2023-08-30 16:47:14
  * @LastEditors: kun
- * @LastEditTime: 2023-10-05 21:41:15
+ * @LastEditTime: 2023-10-09 18:56:00
  * @FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\javascript\split-layout.js
  * @Description: 
  * 
@@ -128,13 +128,16 @@ class LayoutSplit {
 
     processTabsBtn(domstabs,parentId){
         let tabs=domstabs.children[0];//第一个div tabs    
+        let textinput=tabs.querySelector('textarea');//第一个div tabs    
         let buttons = tabs.querySelectorAll(':scope>button');      
         let generantion=getEle(parentId).querySelector('.sixgod-rightslid-generantion') 
         buttons[0].classList.add('sixgod-hide')
         buttons.forEach(btn => {
             btn.onclick=(eve)=>{
                 generantion.style.display='block'
-                this.processTabsBtn(domstabs,parentId)
+                this.processTabsBtn(domstabs,parentId)         
+                textinput.value=''
+                updateInput(textinput)
             }            
         });
 
@@ -184,6 +187,7 @@ class LayoutSplit {
 
     }
 
+    //处理别的插件做兼容 loartool
     processLoraTool() {
         // 监视元素
         const loraTool = document.getElementById('lora-context-menu');
