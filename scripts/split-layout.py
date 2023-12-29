@@ -1,8 +1,8 @@
 '''
 Author: SixGod_K
 Date: 2023-08-30 23:05:20
-LastEditors: kun
-LastEditTime: 2023-09-02 12:57:25
+LastEditors: thisjam 3213441409@qq.cm
+LastEditTime: 2023-12-29 23:15:04
 FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\scripts\split-layout.py
 Description: 
 
@@ -41,16 +41,17 @@ class Script(scripts.Script):
         self.checkpoint_override = checkpoint
 
     def after_component(self, component, **_kwargs):
-        self.findStyleButtom(component)
+         pass
+        # self.findStyleButtom(component)
         # self.findGenerateBtn(component)
 
-    def findStyleButtom(self,component):
-        move_id = "txt2img_clear_prompt" if self.is_txt2img else "img2img_clear_prompt"
-        target_id = "txt2img_style_apply" if self.is_txt2img else "img2img_style_apply"
-        if component.elem_id == move_id:
-             self.move_ele = component           
-        if component.elem_id == target_id:
-             self.target_ele = component
+    # def findStyleButtom(self,component):
+    #     move_id = "txt2img_clear_prompt" if self.is_txt2img else "img2img_clear_prompt"
+    #     target_id = "txt2img_style_apply" if self.is_txt2img else "img2img_style_apply"
+    #     if component.elem_id == move_id:
+    #          self.move_ele = component           
+    #     if component.elem_id == target_id:
+    #          self.target_ele = component
             
           
 
@@ -63,12 +64,13 @@ class Script(scripts.Script):
     #          self.aa = component
         
 
-    def addBtns(self):
-         self.move_ele.parent.add(self.target_ele)
+    # def addBtns(self):
+    #      self.move_ele.parent.add(self.target_ele)
      #     self.result_ele.add(self.generate_ele)
                  
     def ui(self, is_img2img):
-        self.addBtns()
+        # self.addBtns()
+         pass
          
  
  
