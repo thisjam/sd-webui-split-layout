@@ -1,9 +1,9 @@
 /*
  * @Author: SixGod_K
  * @Date: 2023-08-30 16:47:14
- * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime: 2023-12-29 22:05:02
- * @FilePath: \stable-diffusion-webui\extensions\sd-webui-split-layout\javascript\split-layout.js
+ * @LastEditors: Six_God_K
+ * @LastEditTime: 2024-05-03 14:53:10
+ * @FilePath: \sd-webui-split-layout\javascript\split-layout.js
  * @Description: 
  * 
  */
@@ -15,6 +15,7 @@ class LayoutSplit {
     };
     loadNode(callBack) {
         let doms = {
+            tab: getEle('#tab_split-layout'),
             txtleft: getEle('#txt2img_settings'),
             imgleft: getEle('#img2img_settings'),
             btnSave: getEle('#sixgod-layout-save'),
@@ -56,14 +57,63 @@ class LayoutSplit {
 
 
     addSaveSlideEve() {
-        let widthval = getEle('#sixgod-layout-width').innerHTML;
-        let heightval = getEle('#sixgod-layout-height').innerHTML;
-        console.log(widthval, heightval);
-        this.setWidthValue(widthval, heightval);
-        this.Doms.btnSave.onclick = () => {
-            this.setWidthValue(this.Doms.sliderInput.value, this.Doms.sliderInput2.value)
-        };
+        // let widthval = getEle('#sixgod-layout-width').innerHTML;
+        // let heightval = getEle('#sixgod-layout-height').innerHTML;
+        // console.log(widthval, heightval);
+        // this.setWidthValue(widthval, heightval);
+        // this.Doms.btnSave.onclick = () => {
+        //     this.setWidthValue(this.Doms.sliderInput.value, this.Doms.sliderInput2.value)
+        // };
+
+        let div = document.createElement('div')  
+        div.classList.add("sixgod-slider-layout-container")
+        let inputWitdh=this.createInputRange(true,div)
+        let inputHeight=this.createInputRange(false,div)
+
+        let p = document.createElement('p')  
+        let btn = document.createElement('button') 
+        btn.innerHTML='保存' 
+         
+        btn.addEventListener('click', () => {
+            localStorage.setItem('sixgod-slider-layout',JSON.stringify([inputWitdh.value,inputHeight.value]))
+            this.setWidthValue(inputWitdh.value, inputHeight.value)
+        })
+        this.setWidthValue(inputWitdh.value, inputHeight.value)
+ 
+        div.appendChild(p)
+        p.appendChild(btn)
+        this.Doms.tab.appendChild(div)
+       
+      
     };
+
+    createInputRange(iswidth,parentDom){      
+        let p = document.createElement('p')
+        let labelTitle = document.createElement('label')
+        labelTitle.innerHTML=iswidth?'宽度：':'高度：';
+        let input = document.createElement('input')
+        input.type = 'range'
+        input.min = 100
+        input.max = iswidth?1600:800;
+        let cache=localStorage.getItem('sixgod-slider-layout')
+        if(cache){
+            input.value=JSON.parse(cache)[iswidth?0:1]
+        }
+        else{
+           input.value=input.max
+           localStorage.setItem('sixgod-slider-layout',JSON.stringify([1600,800]))
+        }    
+        let labelNum = document.createElement('label')
+        labelNum.innerHTML=input.value  
+        p.appendChild(labelTitle)
+        p.appendChild(input)
+        p.appendChild(labelNum)
+        parentDom.appendChild(p)
+        input.addEventListener('input', function() {
+            labelNum.innerHTML= input.value  ;
+        });
+        return input
+    }
 
 
 
@@ -86,11 +136,18 @@ class LayoutSplit {
     }
 
     onScrollevent(top = 220) {
-        this.Doms.clone1 = this.Doms.genaTxtbtn.cloneNode(true)
-        this.Doms.clone2 = this.Doms.genaImgbtn.cloneNode(true)
-        this.Doms.clone1.children[2].classList.add('secondary')
-        this.Doms.clone2.children[2].classList.add('secondary')
-
+        this.Doms.clone1 = this.Doms.genaTxtbtn.cloneNode(true)//div
+        this.Doms.clone2 = this.Doms.genaImgbtn.cloneNode(true)//div
+   
+        let btn_txt2img_generate=this.Doms.clone1.querySelector('#txt2img_generate')
+        let btn_img2img_generate=this.Doms.clone2.querySelector('#img2img_generate')
+    
+        btn_txt2img_generate.classList.add('secondary')
+        btn_img2img_generate.classList.add('secondary')
+        btn_txt2img_generate.disabled = true;
+        btn_img2img_generate.disabled = true;
+       
+    
         this.Doms.txtPreview.after(this.Doms.clone1)
         this.Doms.imgPreview.after(this.Doms.clone2)
 
@@ -102,11 +159,15 @@ class LayoutSplit {
 
             this.moveRightMenu(event)
         })
-
+        let btnRect= this.Doms.genaTxtbtn.getBoundingClientRect();
+  
+        top=btnRect.top+btnRect.height
+  
         window.addEventListener('scroll', () => {
-            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-
+            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;    
+    
             if (scrollTop > top) {
+                //超过
                 this.Doms.clone1.classList.add('sixgod-hide')
                 this.Doms.clone2.classList.add('sixgod-hide')
                 this.Doms.txtPreview.after(this.Doms.genaTxtbtn)
@@ -137,13 +198,13 @@ class LayoutSplit {
 
     btnsEvent(domstabs) {
         let tabs = domstabs.children[0];//第一个div tabs    
-        let textinput = tabs.querySelector('textarea');//第一个div tabs    
+        let textinput = tabs.querySelector('input');//第一个div tabs    
         let buttons = tabs.querySelectorAll(':scope>button');  
         buttons.forEach(btn => {
             btn.onclick = (eve) => {
                 this.btnsEvent(domstabs)
-                textinput.value = ''
-                updateInput(textinput)
+                // textinput.value = ''
+                // textinput&&updateInput(textinput)
                 buttons[0].classList.add("sixgod-hide")
             
             }    
